@@ -5,6 +5,7 @@ import "./globals.css";
 import { NoiseOverlay } from "@/components/noise-overlay";
 import { ThemeProvider } from "@/components/theme-provider";
 import { BackgroundShell } from "@/components/background-shell";
+import { NeonToaster } from "@/components/ui/neon-toast";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -53,6 +54,7 @@ export default function RootLayout({
               {children}
             </main>
           </div>
+          <NeonToaster />
         </ThemeProvider>
       </body>
     </html>
