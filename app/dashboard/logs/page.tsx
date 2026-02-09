@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useEffect } from "react"
 import { motion } from "framer-motion"
 import { GlassCard } from "@/components/ui/glass-card"
 import { NeonButton } from "@/components/ui/neon-button"
@@ -23,17 +23,37 @@ const MOCK_LOGS: LogEntry[] = [
 ]
 
 export default function LogsPage() {
+    const [logs, setLogs] = useState<LogEntry[]>([])
     const [search, setSearch] = useState("")
     const [filter, setFilter] = useState<string>("ALL")
+    const [isLoading, setIsLoading] = useState(true)
+
+    useEffect(() => {
+        const fetchLogs = async () => {
+            try {
+                const res = await fetch('/api/logs')
+                const data = await res.json()
+                setLogs(data)
+            } catch (error) {
+                console.error("Failed to fetch logs:", error)
+            } finally {
+                setIsLoading(false)
+            }
+        }
+        fetchLogs()
+        // Poll for new logs every 30 seconds
+        const interval = setInterval(fetchLogs, 30000)
+        return () => clearInterval(interval)
+    }, [])
 
     const filteredLogs = useMemo(() => {
-        return MOCK_LOGS.filter(log => {
+        return logs.filter(log => {
             const matchesSearch = log.message.toLowerCase().includes(search.toLowerCase()) ||
                 log.module.toLowerCase().includes(search.toLowerCase())
             const matchesFilter = filter === "ALL" || log.status.toUpperCase() === filter
             return matchesSearch && matchesFilter
         })
-    }, [search, filter])
+    }, [logs, search, filter])
 
     const handleExport = () => {
         exportToCSV(filteredLogs, `lab_logs_${new Date().toISOString().split('T')[0]}.csv`)
@@ -92,11 +112,18 @@ export default function LogsPage() {
                 </div>
             </GlassCard>
 
-            <LogsTimeline logs={filteredLogs} />
+            {isLoading ? (
+                <div className="flex flex-col items-center justify-center py-20 space-y-4">
+                    <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+                    <p className="text-muted-foreground font-mono text-xs uppercase tracking-widest">Accessing Audit Trail...</p>
+                </div>
+            ) : (
+                <LogsTimeline logs={filteredLogs} />
+            )}
 
             <footer className="pt-10 flex justify-between items-center text-muted-foreground">
                 <div className="text-xs font-mono">
-                    Showing {filteredLogs.length} of {MOCK_LOGS.length} entries
+                    Showing {filteredLogs.length} of {logs.length} entries
                 </div>
                 <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />

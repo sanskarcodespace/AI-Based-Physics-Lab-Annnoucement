@@ -1,51 +1,67 @@
 import { create } from "zustand"
-import { persist } from "zustand/middleware"
 import { ScheduleItem } from "../validations/schedule"
 
 interface ScheduleStore {
     items: ScheduleItem[]
-    addItem: (item: Omit<ScheduleItem, "id">) => void
-    updateItem: (id: string, item: Partial<ScheduleItem>) => void
-    deleteItem: (id: string) => void
-    toggleItem: (id: string) => void
+    fetchItems: () => Promise<void>
+    addItem: (item: Omit<ScheduleItem, "id">) => Promise<void>
+    updateItem: (id: string, item: Partial<ScheduleItem>) => Promise<void>
+    deleteItem: (id: string) => Promise<void>
+    toggleItem: (id: string) => Promise<void>
 }
 
-export const useScheduleStore = create<ScheduleStore>()(
-    persist(
-        (set) => ({
-            items: [
-                {
-                    id: "1",
-                    time: "08:00",
-                    message: "Daily lab induction starting in 5 minutes.",
-                    language: "English",
-                    voice: "Google UK English Male",
-                    active: true
-                },
-                {
-                    id: "2",
-                    time: "12:00",
-                    message: "Lunch break protocol initiated.",
-                    language: "English",
-                    voice: "Google UK English Female",
-                    active: true
-                },
-            ],
-            addItem: (item) => set((state) => ({
-                items: [...state.items, { ...item, id: Math.random().toString(36).substring(7) }]
-            })),
-            updateItem: (id, updatedItem) => set((state) => ({
-                items: state.items.map((item) => item.id === id ? { ...item, ...updatedItem } : item)
-            })),
-            deleteItem: (id) => set((state) => ({
-                items: state.items.filter((item) => item.id !== id)
-            })),
-            toggleItem: (id) => set((state) => ({
-                items: state.items.map((item) => item.id === id ? { ...item, active: !item.active } : item)
-            }))
-        }),
-        {
-            name: "lab-schedule-storage",
+export const useScheduleStore = create<ScheduleStore>((set, get) => ({
+    items: [],
+    fetchItems: async () => {
+        try {
+            const res = await fetch('/api/schedule')
+            const data = await res.json()
+            set({ items: data })
+        } catch (error) {
+            console.error("Failed to fetch schedules:", error)
         }
-    )
-)
+    },
+    addItem: async (item) => {
+        try {
+            const res = await fetch('/api/schedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(item)
+            })
+            const newItem = await res.json()
+            set((state) => ({ items: [...state.items, newItem] }))
+        } catch (error) {
+            console.error("Failed to add schedule:", error)
+        }
+    },
+    updateItem: async (id, updatedItem) => {
+        try {
+            const res = await fetch('/api/schedule', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, ...updatedItem })
+            })
+            const updated = await res.json()
+            set((state) => ({
+                items: state.items.map((item) => item.id === id ? updated : item)
+            }))
+        } catch (error) {
+            console.error("Failed to update schedule:", error)
+        }
+    },
+    deleteItem: async (id) => {
+        try {
+            await fetch(`/api/schedule?id=${id}`, { method: 'DELETE' })
+            set((state) => ({
+                items: state.items.filter((item) => item.id !== id)
+            }))
+        } catch (error) {
+            console.error("Failed to delete schedule:", error)
+        }
+    },
+    toggleItem: async (id) => {
+        const item = get().items.find(i => i.id === id)
+        if (!item) return
+        await get().updateItem(id, { active: !item.active })
+    }
+}))

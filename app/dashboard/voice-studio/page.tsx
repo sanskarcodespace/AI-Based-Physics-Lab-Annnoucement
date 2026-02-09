@@ -36,7 +36,7 @@ export default function VoiceStudioPage() {
         window.speechSynthesis.onvoiceschanged = loadVoices
     }, [selectedVoice])
 
-    const handleSpeak = () => {
+    const handleSpeak = async () => {
         if (isSpeaking) window.speechSynthesis.cancel()
 
         const utterance = new SpeechSynthesisUtterance(text)
@@ -50,6 +50,17 @@ export default function VoiceStudioPage() {
         utterance.onerror = () => setIsSpeaking(false)
 
         window.speechSynthesis.speak(utterance)
+
+        // Log to backend
+        try {
+            await fetch('/api/speak', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: text, voice: selectedVoice })
+            })
+        } catch (error) {
+            console.error("Failed to log speak event:", error)
+        }
     }
 
     return (

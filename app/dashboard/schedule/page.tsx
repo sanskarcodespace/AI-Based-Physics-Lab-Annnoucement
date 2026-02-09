@@ -1,14 +1,20 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { ScheduleTable } from "@/components/schedule/schedule-table"
 import { ScheduleModal } from "@/components/schedule/schedule-modal"
 import { NeonButton } from "@/components/ui/neon-button"
 import { Plus, BellRing } from "lucide-react"
+import { useScheduleStore } from "@/lib/store/use-schedule-store"
 
 export default function SchedulePage() {
+    const { fetchItems } = useScheduleStore()
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [editingItem, setEditingItem] = useState<any>(null)
+
+    useEffect(() => {
+        fetchItems()
+    }, [fetchItems])
 
     const handleEdit = (item: any) => {
         setEditingItem(item)
