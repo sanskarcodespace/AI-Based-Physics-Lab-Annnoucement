@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI-Based Physics Lab Announcement System 🧪
 
-## Getting Started
+A premium, high-performance Next.js 14 SaaS platform designed for physics laboratory management and automated audio announcements. Featuring a stunning 3D design system, real-time telemetry, and an intelligent TTS microservice.
 
-First, run the development server:
+![Main Dashboard](https://raw.githubusercontent.com/sanskarcodespace/AI-Based-Physics-Lab-Annnoucement/main/public/demo-screenshot.png)
 
+## ✨ Features
+
+- **Premium SaaS UI**: Glassmorphism aesthetics with dynamic neon accents and 3D visualizations.
+- **Smart Scheduling**: Automate announcements based on lab schedules with daily persistence.
+- **Hybrid TTS Engine**: Intelligent switching between locally synthesized voice and high-fidelity ElevenLabs API.
+- **Micro-interactions**: Framer Motion and GSAP powered animations for a fluid, reactive experience.
+- **Performance Optimized**: 
+  - Dynamic loading of heavy 3D assets.
+  - WebGL suspension on inactive tabs to save energy.
+  - Edge caching for telemetry data.
+- **Emergency Broadcast**: Instant, high-priority voice override system for lab safety.
+
+## 🚀 Quick Start
+
+### 1. Prerequisites
+- Node.js 18+
+- Python 3.10+ (for TTS Service)
+- SQLite (included)
+
+### 2. Installation
+
+#### Frontend (Next.js)
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/sanskarcodespace/AI-Based-Physics-Lab-Annnoucement.git
+cd AI-Based-Physics-Lab-Annnoucement
+npm install
+npx prisma db push
+npx prisma db seed
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### TTS Service (Python)
+```bash
+cd tts_service
+pip install -r requirements.txt
+python server.py
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Environment Secrets
+Create a `.env` file in the root directory:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+DATABASE_URL="file:./dev.db"
+# Optional: High fidelity voice
+ELEVENLABS_API_KEY="your_api_key_here"
+```
 
-## Learn More
+### 4. Run the Platform
+```bash
+# Terminal 1: Frontend
+npm run dev
 
-To learn more about Next.js, take a look at the following resources:
+# Terminal 2: TTS Service
+cd tts_service && python server.py
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🏗️ Technical Architecture
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Frontend**: Next.js 14 (App Router), TypeScript, Tailwind CSS, Shadcn/UI.
+- **3D Engine**: React Three Fiber, Three.js, @react-three/drei, GSAP.
+- **State Management**: Zustand.
+- **Backend**: Next.js API Routes, Prisma ORM, SQLite.
+- **Voice Engine**: FastAPI (Python), Pyttsx3 / ElevenLabs.
 
-## Deploy on Vercel
+## 🔐 Environment Secrets
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The following secrets are required in your Vercel/Production environment:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `DATABASE_URL` | SQLite connection string (local) or Turso (edge) | `file:./dev.db` |
+| `ELEVENLABS_API_KEY` | API Key for high-fidelity voice rendering | (Optional) |
+| `NEXT_PUBLIC_APP_URL` | Base URL of the application | `http://localhost:3000` |
+
+## 🏗️ Build & Deployment Pipeline
+
+This project is optimized for **Vercel** with a semi-automated pipeline:
+
+1.  **Code Commit**: On every push to `main`, Vercel triggers a build.
+2.  **Linting & Analysis**: `eslint` and `next/bundle-analyzer` run to ensure code quality and performance metrics.
+3.  **Database Migration**: `npx prisma db push` is executed during the build phase (custom build command recommended: `npx prisma db push && next build`).
+4.  **Edge Routing**: `vercel.json` handles global headers and API rewrites.
+5.  **Deployment**: The app is served via Vercel's global CDN with optimized asset delivery.
+
+## 🧪 Seeding & Testing
+
+To reset and seed the database with fresh laboratory parameters:
+```bash
+npx prisma db seed
+```
+
+---
+Developed by **Sanskar Sharma** for Advanced Physics Laboratory Management.
