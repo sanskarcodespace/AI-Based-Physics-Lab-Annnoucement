@@ -4,6 +4,7 @@ import { TTSEngine } from "./tts-engine"
 class LabScheduler {
     private interval: NodeJS.Timeout | null = null
     private isRunning = false
+    private isOverrideActive = false
 
     start() {
         if (this.isRunning) return
@@ -17,7 +18,17 @@ class LabScheduler {
         this.checkSchedule()
     }
 
+    setOverride(status: boolean) {
+        this.isOverrideActive = status
+        console.log(`⚠️ Scheduler Override: ${status ? 'ACTIVE' : 'INACTIVE'}`)
+    }
+
     private async checkSchedule() {
+        if (this.isOverrideActive) {
+            console.log("⏳ Scheduler paused due to current Emergency Override")
+            return
+        }
+
         const now = new Date()
         const currentTime = now.toTimeString().slice(0, 5) // HH:MM
         const todayStr = now.toISOString().split('T')[0]

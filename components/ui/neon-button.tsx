@@ -17,7 +17,7 @@ export const NeonButton = React.forwardRef<HTMLButtonElement, NeonButtonProps>(
                 whileHover={{ y: -4, scale: 1.02 }}
                 whileTap={{ y: 0, scale: 0.98 }}
                 className={cn(
-                    "relative px-6 py-3 rounded-xl font-bold transition-all duration-300 overflow-hidden group outline-none",
+                    "relative px-6 py-3 rounded-xl font-bold transition-all duration-300 overflow-hidden group outline-none min-h-[44px] min-w-[44px]",
                     variant === "primary" && "bg-accent text-background shadow-[0_0_20px_rgba(94,234,212,0.3)] hover:shadow-[0_0_30px_rgba(94,234,212,0.6)]",
                     variant === "outline" && "bg-transparent border-2 border-accent text-accent hover:bg-accent/10 shadow-[inner_0_0_10px_rgba(94,234,212,0.2)]",
                     variant === "secondary" && "bg-violet text-background shadow-[0_0_20px_rgba(167,139,250,0.3)] hover:shadow-[0_0_30px_rgba(167,139,250,0.6)]",

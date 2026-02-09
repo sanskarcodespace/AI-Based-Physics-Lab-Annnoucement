@@ -1,18 +1,18 @@
 "use client"
 
 import React from "react"
-import { motion } from "framer-motion"
+import { motion, HTMLMotionProps } from "framer-motion"
 import { cn } from "@/lib/utils"
 
-interface GlassCardProps {
+interface GlassCardProps extends HTMLMotionProps<"div"> {
     children: React.ReactNode
-    className?: string
     animate?: boolean
 }
 
-export const GlassCard = ({ children, className, animate = true }: GlassCardProps) => {
+export const GlassCard = ({ children, className, animate = true, ...props }: GlassCardProps) => {
     return (
         <motion.div
+            {...props}
             initial={animate ? { y: 0 } : false}
             animate={animate ? { y: [0, -10, 0] } : false}
             transition={{

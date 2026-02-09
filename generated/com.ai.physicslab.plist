@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.ai.physicslab.announcement</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/usr/local/bin/npm</string>
+        <string>start</string>
+    </array>
+    <key>WorkingDirectory</key>
+    <string>/Users/sanskarsharma/love me/AI-Based Physics Lab Annnoucement</string>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/Users/sanskarsharma/love me/AI-Based Physics Lab Annnoucement/logs/stdout.log</string>
+    <key>StandardErrorPath</key>
+    <string>/Users/sanskarsharma/love me/AI-Based Physics Lab Annnoucement/logs/stderr.log</string>
+</dict>
+</plist>

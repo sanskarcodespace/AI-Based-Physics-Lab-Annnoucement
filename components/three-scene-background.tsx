@@ -4,21 +4,23 @@ import React, { Suspense, useRef, useState, useEffect } from 'react'
 import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import { Environment, PerspectiveCamera } from '@react-three/drei'
 import { EffectComposer, Bloom } from '@react-three/postprocessing'
-import * as THREE from 'three'
+import { MathUtils, Group } from 'three'
 import { ParticlesGrid } from "@/three/particles-grid"
 import { FloatingElements } from "@/three/floating-elements"
+import { useReducedMotion } from "framer-motion"
 
 const SceneContent = () => {
     const { mouse, viewport } = useThree()
-    const groupRef = useRef<THREE.Group>(null)
+    const groupRef = useRef<Group>(null)
+    const shouldReduceMotion = useReducedMotion()
 
     useFrame(() => {
-        if (!groupRef.current) return
+        if (!groupRef.current || shouldReduceMotion) return
         // Parallax movement based on mouse
         const x = (mouse.x * viewport.width) / 20
         const y = (mouse.y * viewport.height) / 20
-        groupRef.current.position.x = THREE.MathUtils.lerp(groupRef.current.position.x, x, 0.05)
-        groupRef.current.position.y = THREE.MathUtils.lerp(groupRef.current.position.y, y, 0.05)
+        groupRef.current.position.x = MathUtils.lerp(groupRef.current.position.x, x, 0.05)
+        groupRef.current.position.y = MathUtils.lerp(groupRef.current.position.y, y, 0.05)
     })
 
     return (
@@ -31,15 +33,25 @@ const SceneContent = () => {
 
 export const ThreeSceneBackground = () => {
     const [isMobile, setIsMobile] = useState(false)
+    const [isVisible, setIsVisible] = useState(true)
 
     useEffect(() => {
+        const handleVisibility = () => setIsVisible(document.visibilityState === 'visible')
         const checkMobile = () => setIsMobile(window.innerWidth < 768)
+
         checkMobile()
+        handleVisibility()
+
         window.addEventListener('resize', checkMobile)
-        return () => window.removeEventListener('resize', checkMobile)
+        document.addEventListener('visibilitychange', handleVisibility)
+
+        return () => {
+            window.removeEventListener('resize', checkMobile)
+            document.removeEventListener('visibilitychange', handleVisibility)
+        }
     }, [])
 
-    if (isMobile) return null // Fallback to CSS gradient in layout
+    if (isMobile || !isVisible) return null
 
     return (
         <div className="fixed inset-0 -z-10 pointer-events-none overflow-hidden">

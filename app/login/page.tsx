@@ -28,17 +28,17 @@ export default function LoginPage() {
                 initial={{ opacity: 0, scale: 0.9, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                className="w-full max-w-md z-10"
+                className="w-full max-w-[400px] z-10"
             >
                 <div className="flex flex-col items-center mb-10 space-y-4">
                     <AnimatedLogo className="scale-125" />
                     <div className="text-center space-y-2">
-                        <h2 className="text-3xl font-heading font-bold text-gradient">Welcome Back</h2>
-                        <p className="text-muted-foreground font-sans">Secure login to your research dashboard</p>
+                        <h2 className="text-2xl sm:text-3xl font-heading font-bold text-gradient">Welcome Back</h2>
+                        <p className="text-sm sm:text-base text-muted-foreground font-sans text-balance px-4">Secure login to your research dashboard</p>
                     </div>
                 </div>
 
-                <GlassCard className="p-8 border-white/10 shadow-2xl perspective-1000 rotate-x-1" animate={false}>
+                <GlassCard className="p-6 sm:p-8 border-white/10 shadow-2xl perspective-1000 rotate-x-1" animate={false}>
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <TranslucentInput
                             label="Email Address"
@@ -59,16 +59,19 @@ export default function LoginPage() {
                             />
                         </div>
 
-                        <div className="flex items-center gap-2">
-                            <input
-                                type="checkbox"
-                                id="remember"
-                                className="w-4 h-4 rounded border-white/10 bg-white/5 text-accent focus:ring-accent/20"
-                            />
-                            <label htmlFor="remember" className="text-sm text-muted-foreground select-none">
+                        <label htmlFor="remember" className="flex items-center gap-3 cursor-pointer group hover:bg-white/5 p-2 -ml-2 rounded-lg transition-colors min-tap-target">
+                            <div className="relative flex items-center">
+                                <input
+                                    type="checkbox"
+                                    id="remember"
+                                    className="peer w-5 h-5 rounded border-white/10 bg-white/5 text-accent focus:ring-accent/20 cursor-pointer"
+                                />
+                                <div className="absolute inset-0 rounded border border-white/10 peer-checked:border-accent pointer-events-none transition-colors" />
+                            </div>
+                            <span className="text-sm text-muted-foreground select-none group-hover:text-slate-200 transition-colors">
                                 Remember for 30 days
-                            </label>
-                        </div>
+                            </span>
+                        </label>
 
                         <NeonButton type="submit" className="w-full py-4 text-lg">
                             Sign In

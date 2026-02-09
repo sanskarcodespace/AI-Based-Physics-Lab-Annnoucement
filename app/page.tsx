@@ -11,7 +11,7 @@ export default function Home() {
           <span>Next-Generation Physics Lab</span>
         </div>
 
-        <h1 className="text-5xl md:text-7xl font-heading font-bold tracking-tight text-gradient leading-[1.1]">
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-heading font-bold tracking-tight text-gradient leading-[1.1]">
           Visualize Physics in <br />
           <span className="text-accent underline decoration-accent/30 underline-offset-8">Stunning 3D</span>
         </h1>

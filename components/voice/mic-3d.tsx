@@ -6,8 +6,18 @@ import { MeshDistortMaterial, PerspectiveCamera, Float, MeshWobbleMaterial } fro
 import * as THREE from "three"
 
 export const Mic3D = () => {
+    const [isVisible, setIsVisible] = React.useState(true)
+
+    React.useEffect(() => {
+        const handleVisibility = () => setIsVisible(document.visibilityState === 'visible')
+        document.addEventListener('visibilitychange', handleVisibility)
+        return () => document.removeEventListener('visibilitychange', handleVisibility)
+    }, [])
+
+    if (!isVisible) return null
+
     return (
-        <div className="w-full h-[400px] relative cursor-grab active:cursor-grabbing">
+        <group>
             <PerspectiveCamera makeDefault position={[0, 0, 5]} />
             <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} intensity={1} color="#5EEAD4" />
@@ -60,6 +70,6 @@ export const Mic3D = () => {
                     </mesh>
                 </group>
             </Float>
-        </div>
+        </group>
     )
 }

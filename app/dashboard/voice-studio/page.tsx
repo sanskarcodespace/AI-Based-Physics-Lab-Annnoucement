@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react"
 import { motion } from "framer-motion"
 import { GlassCard } from "@/components/ui/glass-card"
 import { NeonButton } from "@/components/ui/neon-button"
-import { Mic3D } from "@/components/voice/mic-3d"
-import { WaveformCanvas } from "@/components/voice/waveform-canvas"
 import {
     AudioWaveform as Waveform,
     Settings2,
@@ -17,6 +15,16 @@ import {
     Clock
 } from "lucide-react"
 import { Canvas } from "@react-three/fiber"
+import dynamic from "next/dynamic"
+
+const Mic3D = dynamic(() => import("@/components/voice/mic-3d").then(mod => mod.Mic3D), {
+    ssr: false,
+    loading: () => <div className="h-full w-full flex items-center justify-center bg-white/5 animate-pulse rounded-2xl">Loading 3D Monitor...</div>
+})
+
+const WaveformCanvas = dynamic(() => import("@/components/voice/waveform-canvas").then(mod => mod.WaveformCanvas), {
+    ssr: false
+})
 
 export default function VoiceStudioPage() {
     const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])

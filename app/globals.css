@@ -10,13 +10,13 @@
   --font-sans: var(--font-inter);
   --font-heading: var(--font-space-grotesk);
   --font-mono: var(--font-jetbrains-mono);
-  
+
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
-  
+
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-  
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -27,32 +27,32 @@
 :root {
   --background: #0B1020;
   --foreground: #F8FAFC;
-  
+
   --card: #121935;
   --card-foreground: #F8FAFC;
-  
+
   --popover: #121935;
   --popover-foreground: #F8FAFC;
-  
+
   --primary: #5EEAD4;
   --primary-foreground: #0B1020;
-  
+
   --secondary: #1E293B;
   --secondary-foreground: #F8FAFC;
-  
+
   --muted: #1E293B;
   --muted-foreground: #94A3B8;
-  
+
   --accent: #5EEAD4;
   --accent-foreground: #0B1020;
-  
+
   --destructive: #EF4444;
   --destructive-foreground: #F8FAFC;
-  
+
   --border: rgba(255, 255, 255, 0.1);
   --input: rgba(255, 255, 255, 0.1);
   --ring: #5EEAD4;
-  
+
   --radius: 0.75rem;
 }
 
@@ -60,9 +60,10 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground font-sans selection:bg-accent selection:text-background;
-    background-image: 
+    background-image:
       radial-gradient(circle at 50% 0%, rgba(167, 139, 250, 0.05) 0%, transparent 50%),
       radial-gradient(circle at 100% 0%, rgba(94, 234, 212, 0.05) 0%, transparent 50%);
   }
@@ -72,7 +73,7 @@
   .glass {
     @apply bg-white/5 backdrop-blur-md border border-white/10;
   }
-  
+
   .glass-card {
     @apply bg-card/50 backdrop-blur-xl border border-white/10 shadow-2xl;
   }
@@ -83,9 +84,38 @@
 
   .animate-grid {
     background-size: 40px 40px;
-    background-image: 
+    background-image:
       linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
       linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
     mask-image: radial-gradient(circle at center, black, transparent 80%);
+  }
+
+  .min-tap-target {
+    min-width: 44px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  ::before,
+  ::after {
+    animation-delay: -1ms !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    background-attachment: initial !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+  }
+
+  .animate-pulse,
+  .animate-bounce,
+  .animate-spin {
+    animation: none !important;
   }
 }

@@ -53,12 +53,24 @@ export const WaveformCanvas = ({ isActive }: { isActive: boolean }) => {
             }
             ctx.stroke()
 
+            if (document.visibilityState !== 'visible') {
+                animationRef.current = requestAnimationFrame(draw)
+                return
+            }
             offset += speed
             animationRef.current = requestAnimationFrame(draw)
         }
 
+        const handleVisibility = () => {
+            if (document.visibilityState === 'visible') draw()
+        }
+
+        document.addEventListener('visibilitychange', handleVisibility)
         draw()
-        return () => cancelAnimationFrame(animationRef.current)
+        return () => {
+            cancelAnimationFrame(animationRef.current)
+            document.removeEventListener('visibilitychange', handleVisibility)
+        }
     }, [isActive])
 
     return (
