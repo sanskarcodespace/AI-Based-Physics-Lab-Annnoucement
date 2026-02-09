@@ -10,7 +10,8 @@ import {
     BarChart3,
     ChevronLeft,
     ChevronRight,
-    LayoutDashboard
+    LayoutDashboard,
+    Mic2
 } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -18,6 +19,7 @@ import { cn } from "@/lib/utils"
 
 const navItems = [
     { icon: LayoutDashboard, label: "Overview", href: "/dashboard" },
+    { icon: Mic2, label: "Voice Studio", href: "/dashboard/voice-studio" },
     { icon: Calendar, label: "Schedule", href: "/dashboard/schedule" },
     { icon: Terminal, label: "Logs", href: "/dashboard/logs" },
     { icon: BarChart3, label: "Analytics", href: "/dashboard/analytics" },
@@ -59,7 +61,7 @@ export const DashboardNav = () => {
 
             {/* Mobile Bottom Nav */}
             <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 glass border-t border-white/10 z-[100] px-4 flex items-center justify-around backdrop-blur-2xl">
-                {navItems.slice(0, 5).map((item) => (
+                {navItems.slice(0, 6).map((item) => (
                     <Link
                         key={item.href}
                         href={item.href}
