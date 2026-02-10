@@ -43,7 +43,11 @@ class LabScheduler {
             const schedules = await prisma.scheduleItem.findMany({
                 where: {
                     time: currentTime,
-                    active: true
+                    active: true,
+                    OR: [
+                        { date: null },
+                        { date: todayStr }
+                    ]
                 }
             })
 

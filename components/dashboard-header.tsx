@@ -5,9 +5,10 @@ import { motion } from "framer-motion"
 import { Shield, Clock, Zap } from "lucide-react"
 
 export const DashboardHeader = () => {
-    const [time, setTime] = useState(new Date())
+    const [time, setTime] = useState<Date | null>(null)
 
     useEffect(() => {
+        setTime(new Date())
         const timer = setInterval(() => setTime(new Date()), 1000)
         return () => clearInterval(timer)
     }, [])
@@ -36,7 +37,7 @@ export const DashboardHeader = () => {
                 <div className="hidden md:flex items-center gap-4 px-4 py-2 bg-white/5 rounded-xl border border-white/10">
                     <Clock className="text-muted-foreground" size={16} />
                     <span className="text-sm font-mono font-medium text-foreground tabular-nums">
-                        {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                        {time ? time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : "--:--:--"}
                     </span>
                 </div>
 

@@ -16,8 +16,9 @@ export const ScheduleTable = ({ onEdit }: { onEdit: (item: any) => void }) => {
                     <thead>
                         <tr className="border-b border-white/5 bg-white/5">
                             <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Time</th>
+                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Date/Frequency</th>
+                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground text-center">Type</th>
                             <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground">Announcement Message</th>
-                            <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground text-center">Language</th>
                             <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground text-center">Status</th>
                             <th className="px-6 py-4 text-xs font-bold uppercase tracking-wider text-muted-foreground text-right">Actions</th>
                         </tr>
@@ -29,12 +30,27 @@ export const ScheduleTable = ({ onEdit }: { onEdit: (item: any) => void }) => {
                                     <span className="font-mono font-bold text-accent text-lg">{item.time}</span>
                                 </td>
                                 <td className="px-6 py-4">
-                                    <p className="text-sm font-sans line-clamp-1 text-foreground/80">{item.message}</p>
+                                    <span className="text-xs font-medium text-muted-foreground bg-white/5 px-2 py-1 rounded border border-white/10">
+                                        {item.date || "Daily Re-cycle"}
+                                    </span>
                                 </td>
                                 <td className="px-6 py-4 text-center">
-                                    <span className="text-xs px-2 py-1 rounded-md bg-white/5 border border-white/10 text-muted-foreground uppercase">
-                                        {item.language}
+                                    <span className={cn(
+                                        "text-[10px] font-bold uppercase tracking-tighter px-2 py-0.5 rounded border",
+                                        item.type === "lab_manual" ? "bg-violet/20 text-violet border-violet/30" : "bg-sky-500/10 text-sky-400 border-sky-500/20"
+                                    )}>
+                                        {item.type === "lab_manual" ? "Lab Manual" : "General"}
                                     </span>
+                                </td>
+                                <td className="px-6 py-4">
+                                    <div className="flex flex-col gap-1">
+                                        <p className="text-sm font-sans line-clamp-1 text-foreground/80">{item.message}</p>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[9px] uppercase tracking-widest text-muted-foreground/50 font-bold px-1 bg-white/5 rounded">
+                                                {item.language}
+                                            </span>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td className="px-6 py-4 text-center">
                                     <button

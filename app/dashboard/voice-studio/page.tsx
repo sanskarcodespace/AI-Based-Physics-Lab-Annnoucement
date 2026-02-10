@@ -14,7 +14,6 @@ import {
     RefreshCw,
     Clock
 } from "lucide-react"
-import { Canvas } from "@react-three/fiber"
 import dynamic from "next/dynamic"
 
 const Mic3D = dynamic(() => import("@/components/voice/mic-3d").then(mod => mod.Mic3D), {
@@ -173,9 +172,7 @@ export default function VoiceStudioPage() {
                             </div>
                         </div>
 
-                        <Canvas shadows gl={{ antialias: true }}>
-                            <Mic3D />
-                        </Canvas>
+                        <Mic3D />
 
                         <div className="absolute bottom-6 right-6 z-10">
                             <div className="px-4 py-2 glass border-white/10 rounded-xl text-[10px] font-mono text-muted-foreground">

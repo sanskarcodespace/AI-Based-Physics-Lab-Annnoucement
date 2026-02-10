@@ -1,23 +1,26 @@
 "use client"
 
-import React, { useRef } from "react"
-import { useFrame } from "@react-three/fiber"
-import { MeshDistortMaterial, PerspectiveCamera, Float, MeshWobbleMaterial } from "@react-three/drei"
-import * as THREE from "three"
+import React, { useState, useEffect } from "react"
+import { Canvas, useFrame } from "@react-three/fiber"
+import { PerspectiveCamera, Float, MeshWobbleMaterial } from "@react-three/drei"
 
 export const Mic3D = () => {
-    const [isVisible, setIsVisible] = React.useState(true)
+    const [isVisible, setIsVisible] = useState(true)
 
-    React.useEffect(() => {
+    useEffect(() => {
         const handleVisibility = () => setIsVisible(document.visibilityState === 'visible')
         document.addEventListener('visibilitychange', handleVisibility)
         return () => document.removeEventListener('visibilitychange', handleVisibility)
     }, [])
 
-    if (!isVisible) return null
+    if (!isVisible) return (
+        <div className="w-full h-full flex items-center justify-center bg-white/5 rounded-2xl">
+            <span className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Monitor Suspended</span>
+        </div>
+    )
 
     return (
-        <group>
+        <Canvas shadows gl={{ antialias: true }} className="w-full h-full">
             <PerspectiveCamera makeDefault position={[0, 0, 5]} />
             <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} intensity={1} color="#5EEAD4" />
@@ -70,6 +73,6 @@ export const Mic3D = () => {
                     </mesh>
                 </group>
             </Float>
-        </group>
+        </Canvas>
     )
 }

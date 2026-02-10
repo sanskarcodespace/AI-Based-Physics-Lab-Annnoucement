@@ -24,6 +24,8 @@ export const ScheduleModal = ({ isOpen, onClose, editingItem }: ScheduleModalPro
         resolver: zodResolver(scheduleSchema),
         defaultValues: editingItem || {
             time: "",
+            date: "",
+            type: "general",
             message: "",
             language: "English",
             voice: "",
@@ -37,6 +39,8 @@ export const ScheduleModal = ({ isOpen, onClose, editingItem }: ScheduleModalPro
         } else {
             reset({
                 time: "",
+                date: "",
+                type: "general",
                 message: "",
                 language: "English",
                 voice: "",
@@ -91,6 +95,25 @@ export const ScheduleModal = ({ isOpen, onClose, editingItem }: ScheduleModalPro
                         {...register("time")}
                         error={errors.time?.message as string}
                     />
+                    <TranslucentInput
+                        label="Date (Optional)"
+                        type="date"
+                        {...register("date")}
+                        error={errors.date?.message as string}
+                    />
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <label className="text-sm font-medium text-muted-foreground">Category</label>
+                        <select
+                            {...register("type")}
+                            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-accent/50 text-foreground"
+                        >
+                            <option value="general">General Lab</option>
+                            <option value="lab_manual">Lab Manual</option>
+                        </select>
+                    </div>
                     <div className="space-y-2">
                         <label className="text-sm font-medium text-muted-foreground">Language</label>
                         <select
@@ -110,7 +133,7 @@ export const ScheduleModal = ({ isOpen, onClose, editingItem }: ScheduleModalPro
                     <textarea
                         id="message-area"
                         {...register("message")}
-                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-accent/50 min-h-[120px] transition-all text-foreground"
+                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl outline-none focus:border-accent/50 min-h-[120px] transition-all text-white placeholder:text-muted-foreground/30"
                         placeholder="Enter the automated announcement text..."
                     />
                     {errors.message && <p className="text-xs text-rose-500 font-medium">{errors.message.message as string}</p>}

@@ -14,6 +14,8 @@ datasource db {
 model ScheduleItem {
   id        String   @id @default(cuid())
   time      String
+  date      String? // YYYY-MM-DD for one-time announcements
+  type      String   @default("general") // general, lab_manual
   message   String
   language  String   @default("English")
   voice     String?
